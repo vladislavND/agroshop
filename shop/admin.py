@@ -8,7 +8,7 @@ class ShopAdmin(admin.ModelAdmin):
     list_display = ['name']
 
 
-@admin.register(ShopUser)
+@admin.register(Users)
 class ShopUserAdmin(admin.ModelAdmin):
     list_fields = ('__all__')
     list_display = ['username', 'shop']

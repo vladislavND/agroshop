@@ -1,18 +1,23 @@
-from django.shortcuts import render
-from rest_framework import routers, viewsets, views, generics
+from rest_framework import viewsets, generics
+from rest_framework.pagination import PageNumberPagination
 
 from shop.models import *
 from shop.serializers import UserShopSerializer, ProductsSerializer, ParentCategorySerializer, ShopSerializer
 
 
-class ParentCategoryApi(generics.ListAPIView):
+class ShopPagination(PageNumberPagination):
+    page_size = 1
+
+
+class ParentCategoryViewSet(generics.ListAPIView):
     queryset = ParentCategory.objects.all()
     serializer_class = ParentCategorySerializer
 
 
-class ProductsViewSet(generics.ListAPIView):
+class ProductsViewSet(generics.ListAPIView, generics.UpdateAPIView, generics.DestroyAPIView):
     queryset = Products.objects.all()
     serializer_class = ProductsSerializer
+    pagination_class = ShopPagination
 
 
 class ShopUserViewSet(viewsets.ModelViewSet):
@@ -20,8 +25,8 @@ class ShopUserViewSet(viewsets.ModelViewSet):
     serializer_class = ShopSerializer
 
 
-class UserViewSet(viewsets.ModelViewSet):
-    queryset = ShopUser.objects.all()
+class UserViewSet(generics.ListAPIView):
+    queryset = Users.objects.all()
     serializer_class = UserShopSerializer
 
 

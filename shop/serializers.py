@@ -30,6 +30,7 @@ class ProductsSerializer(serializers.ModelSerializer):
     image = ImageSerializer(many=True, read_only=True)
     parent_category = serializers.PrimaryKeyRelatedField(source='parent_category.name', read_only=True)
     child_category = serializers.PrimaryKeyRelatedField(source='child_category.name', read_only=True)
+    shop = serializers.PrimaryKeyRelatedField(source='shop.name', read_only=True)
 
     class Meta:
         model = Products
@@ -50,8 +51,8 @@ class UserShopSerializer(serializers.ModelSerializer):
     shop = ShopSerializer()
 
     class Meta:
-        model = ShopUser
-        fields = ['url', 'username', 'email', 'is_staff', 'shop']
+        model = Users
+        fields = ['url', 'username', 'email', 'is_staff', 'is_seller', 'shop']
 
 
 

@@ -65,15 +65,9 @@ class Shop(models.Model):
         return f'{self.name}'
 
 
-class ShopUser(User):
-    SELLER = 'SELLER'
-    BUYER = 'BUYER'
-    USER_CHOICE = [
-        (SELLER, 'Продавец'),
-        (BUYER, 'Покупатель')
-    ]
-    user_choices = models.CharField(max_length=255, choices=USER_CHOICE, default=BUYER)
-    shop = models.ForeignKey(Shop, on_delete=models.CASCADE)
+class Users(User):
+    is_seller = models.BooleanField(default=True)
+    shop = models.ForeignKey(Shop, on_delete=models.CASCADE, null=True, blank=True)
 
 
 
