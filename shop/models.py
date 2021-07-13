@@ -56,7 +56,7 @@ class Shop(models.Model):
     name = models.CharField(max_length=255)
     descriptions = models.CharField(max_length=255, null=True, blank=True)
     image = models.ImageField()
-    products = models.ManyToManyField(Products, related_name='products_id')
+    products = models.ManyToManyField(Products, related_name='products_id', null=True, blank=True)
     parent_category = models.ForeignKey(ParentCategory, on_delete=models.CASCADE)
     child_category = models.ForeignKey(ChildCategory, on_delete=models.CASCADE, null=True, blank=True)
     date_add = models.DateTimeField(auto_now=True)

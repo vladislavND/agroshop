@@ -14,7 +14,8 @@ class ParentCategoryViewSet(generics.ListAPIView):
     serializer_class = ParentCategorySerializer
 
 
-class ProductsViewSet(generics.ListAPIView, generics.UpdateAPIView, generics.DestroyAPIView):
+class ProductsViewSet(generics.ListAPIView, generics.UpdateAPIView,
+                      generics.DestroyAPIView, generics.CreateAPIView):
     queryset = Products.objects.all()
     serializer_class = ProductsSerializer
     pagination_class = ShopPagination

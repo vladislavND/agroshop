@@ -26,11 +26,7 @@ class ImageSerializer(serializers.ModelSerializer):
 
 
 class ProductsSerializer(serializers.ModelSerializer):
-    weight_choices = serializers.CharField(source='get_weight_choices_display')
-    image = ImageSerializer(many=True, read_only=True)
-    parent_category = serializers.PrimaryKeyRelatedField(source='parent_category.name', read_only=True)
-    child_category = serializers.PrimaryKeyRelatedField(source='child_category.name', read_only=True)
-    shop = serializers.PrimaryKeyRelatedField(source='shop.name', read_only=True)
+    image = ImageSerializer(many=True)
 
     class Meta:
         model = Products
