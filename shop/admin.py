@@ -8,13 +8,13 @@ class ShopAdmin(admin.ModelAdmin):
     list_display = ['name']
 
 
-@admin.register(Users)
-class ShopUserAdmin(admin.ModelAdmin):
+@admin.register(Client)
+class ShopClientAdmin(admin.ModelAdmin):
     list_fields = ('__all__')
-    list_display = ['username', 'shop']
+    list_display = ['username']
 
 
-@admin.register(Products)
+@admin.register(Product)
 class ProductsAdmin(admin.ModelAdmin):
     list_fields = ('__all__')
     list_display = ['name', 'price']

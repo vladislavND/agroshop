@@ -20,14 +20,18 @@ class ParentCategory(models.Model):
 
 
 class ProductsImage(models.Model):
-    image = models.ImageField(upload_to='shop/images')
+    image = models.ImageField(upload_to='shop/images/products')
 
     # TODO: Доделать метод сохранения изображений в определенную директорию
     def directory_image(self, username, shop_name):
         image = self.image
 
 
-class Products(models.Model):
+class Client(User):
+    is_seller = models.BooleanField(default=True)
+
+
+class Product(models.Model):
     KG = 'KG'
     GR = 'GR'
     WEIGHT_CHOICES = [
@@ -45,29 +49,31 @@ class Products(models.Model):
     parent_category = models.ForeignKey(ParentCategory, on_delete=models.CASCADE)
     child_category = models.ForeignKey(ChildCategory, on_delete=models.CASCADE)
     image = models.ManyToManyField(ProductsImage)
+    owner = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='products')
+    shop = models.ForeignKey('Shop', on_delete=models.CASCADE, null=True, blank=True, related_name='products')
     date_add = models.DateField(auto_now=True)
-    shop = models.ForeignKey('Shop', on_delete=models.CASCADE, null=True, blank=True, related_name='user_id')
 
     def __str__(self):
         return f'{self.name} Цена: {self.price}'
+
+    def products_sale_price(self):
+        if self.sale:
+            """Получаем цену со скидкой"""
+            count = self.price / 100 * self.sale
+            return self.price - count
 
 
 class Shop(models.Model):
     name = models.CharField(max_length=255)
     descriptions = models.CharField(max_length=255, null=True, blank=True)
-    image = models.ImageField()
-    products = models.ManyToManyField(Products, related_name='products_id', null=True, blank=True)
+    image = models.ImageField(upload_to='shop/images/shops')
     parent_category = models.ForeignKey(ParentCategory, on_delete=models.CASCADE)
     child_category = models.ForeignKey(ChildCategory, on_delete=models.CASCADE, null=True, blank=True)
     date_add = models.DateTimeField(auto_now=True)
+    owner = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='shops')
 
     def __str__(self):
         return f'{self.name}'
-
-
-class Users(User):
-    is_seller = models.BooleanField(default=True)
-    shop = models.ForeignKey(Shop, on_delete=models.CASCADE, null=True, blank=True)
 
 
 
