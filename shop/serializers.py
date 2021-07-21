@@ -4,6 +4,36 @@ from rest_framework import serializers
 from shop.models import *
 
 
+class CountrySerializer(serializers.ModelSerializer):
+    region = serializers.PrimaryKeyRelatedField(queryset=Region.objects.all())
+
+    class Meta:
+        model = Country
+        fields = ('__all__')
+
+
+class RegionSerializer(serializers.ModelSerializer):
+    city = serializers.PrimaryKeyRelatedField(queryset=City.objects.all())
+
+    class Meta:
+        model = Region
+        fields = ('__all__')
+
+
+class CitySerializer(serializers.ModelSerializer):
+    village = serializers.PrimaryKeyRelatedField(queryset=Village.objects.all())
+
+    class Meta:
+        model = City
+        fields = ('__all__')
+
+
+class VillageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Village
+        fields = ('__all__')
+
+
 class ChildCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = ChildCategory
@@ -40,6 +70,7 @@ class ShopSerializer(serializers.ModelSerializer):
     image = serializers.ImageField()
     parent_category = serializers.PrimaryKeyRelatedField(queryset=ParentCategory.objects.all())
     child_category = serializers.PrimaryKeyRelatedField(queryset=ChildCategory.objects.all(), required=False)
+    country = serializers.PrimaryKeyRelatedField(queryset=Country.objects.all(), required=True)
     parent_category_name = serializers.CharField(source='parent_category.name', read_only=True)
     child_category_name = serializers.CharField(source='child_category.name', read_only=True)
 
@@ -56,6 +87,7 @@ class ShopSerializer(serializers.ModelSerializer):
             'owner',
             'parent_category_name',
             'child_category_name',
+            'country'
         ]
 
 

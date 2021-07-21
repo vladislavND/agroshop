@@ -2,9 +2,33 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
+class Village(models.Model):
+    name = models.CharField(max_length=255)
+
+
+class City(models.Model):
+    name = models.CharField(max_length=255)
+    village = models.ForeignKey(Village, on_delete=models.CASCADE, null=True, blank=True, related_name='citys')
+    big_city = models.BooleanField(default=False, help_text='Город областного значения')
+
+
+class Region(models.Model):
+    name = models.CharField(max_length=255)
+    city = models.ForeignKey(City, on_delete=models.CASCADE, null=True, blank=True, related_name='regions')
+
+
+class Country(models.Model):
+    name = models.CharField(max_length=255)
+    region = models.ForeignKey(Region, on_delete=models.CASCADE, null=True, blank=True, related_name='countries')
+
+
 class ChildCategory(models.Model):
     name = models.CharField(max_length=255)
     descriptions = models.CharField(max_length=255, null=True, blank=True)
+
+    class Meta:
+        verbose_name = 'Категория'
+        verbose_name_plural = 'Категории'
 
     def __str__(self):
         return f'{self.name}'
@@ -14,6 +38,10 @@ class ParentCategory(models.Model):
     name = models.CharField(max_length=255)
     descriptions = models.CharField(max_length=255, null=True, blank=True)
     child_category = models.ManyToManyField(ChildCategory)
+
+    class Meta:
+        verbose_name = 'Родительская категория'
+        verbose_name_plural = 'Родительские категории'
 
     def __str__(self):
         return f'{self.name}'
@@ -29,6 +57,13 @@ class ProductsImage(models.Model):
 
 class Client(User):
     is_seller = models.BooleanField(default=True)
+
+    class Meta:
+        verbose_name = 'Клиент'
+        verbose_name_plural = 'Клиенты'
+
+    def __str__(self):
+        return f'{self.username}'
 
 
 class Product(models.Model):
@@ -53,6 +88,10 @@ class Product(models.Model):
     shop = models.ForeignKey('Shop', on_delete=models.CASCADE, null=True, blank=True, related_name='products')
     date_add = models.DateField(auto_now=True)
 
+    class Meta:
+        verbose_name = 'Продукт'
+        verbose_name_plural = 'Продукты'
+
     def __str__(self):
         return f'{self.name} Цена: {self.price}'
 
@@ -71,6 +110,11 @@ class Shop(models.Model):
     child_category = models.ForeignKey(ChildCategory, on_delete=models.CASCADE, null=True, blank=True)
     date_add = models.DateTimeField(auto_now=True)
     owner = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='shops')
+    country = models.ForeignKey(Country, on_delete=models.CASCADE, null=True, blank=True, related_name='shops')
+
+    class Meta:
+        verbose_name = 'Магазин'
+        verbose_name_plural = 'Магазины'
 
     def __str__(self):
         return f'{self.name}'
