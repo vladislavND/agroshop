@@ -33,3 +33,31 @@ class ChildCategoryAdmin(admin.ModelAdmin):
 @admin.register(ParentCategory)
 class ParentCategoryAdmin(admin.ModelAdmin):
     list_fields = ('__all__')
+
+
+@admin.register(Country)
+class CountryAdmin(admin.ModelAdmin):
+    list_fields = ('__all__')
+
+
+@admin.register(Region)
+class RegionAdmin(admin.ModelAdmin):
+    list_fields = ('__all__')
+
+
+@admin.register(City)
+class CityAdmin(admin.ModelAdmin):
+    list_fields = ('__all__')
+
+
+@admin.register(Village)
+class VillageAdmin(admin.ModelAdmin):
+    list_fields = ('__all__')
+
+
+
+
+
+
+
+
